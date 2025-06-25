@@ -3,7 +3,6 @@
 class BlogsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index show]
 
-  before_action :set_blog, only: %i[show]
   before_action :authorize_blog_owner!, only: %i[edit update destroy]
 
   def index
@@ -11,7 +10,7 @@ class BlogsController < ApplicationController
   end
 
   def show
-    authorize_blog_owner! if @blog.secret
+    @blog = Blog.by_id(params[:id]).visible_to(current_user).first!
   end
 
   def new
@@ -45,10 +44,6 @@ class BlogsController < ApplicationController
   end
 
   private
-
-  def set_blog
-    @blog = Blog.find(params[:id])
-  end
 
   def blog_params
     permitted_params = params.require(:blog).permit(:title, :content, :secret, :random_eyecatch)
