@@ -46,9 +46,7 @@ class BlogsController < ApplicationController
   private
 
   def blog_params
-    permitted_params = params.require(:blog).permit(:title, :content, :secret, :random_eyecatch)
-    permitted_params[:random_eyecatch] = '0' if !current_user.premium && permitted_params[:random_eyecatch]
-    permitted_params
+    params.require(:blog).permit(:title, :content, :secret, :random_eyecatch)
   end
 
   def authorize_blog_owner!
