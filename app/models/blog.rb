@@ -25,6 +25,6 @@ class Blog < ApplicationRecord
   private
 
   def clear_random_eyecatch_unless_premium
-    self.random_eyecatch = false unless user.premium?
+    self.random_eyecatch = false if !user.premium? && !random_eyecatch_before_last_save
   end
 end
