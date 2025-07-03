@@ -7,8 +7,6 @@ class Blog < ApplicationRecord
 
   validates :title, :content, presence: true
 
-  before_save :clear_random_eyecatch_unless_premium
-
   scope :published, -> { where('secret = FALSE') }
 
   scope :search, lambda { |term|
@@ -20,11 +18,5 @@ class Blog < ApplicationRecord
 
   def owned_by?(target_user)
     user == target_user
-  end
-
-  private
-
-  def clear_random_eyecatch_unless_premium
-    self.random_eyecatch = false if !user.premium? && !random_eyecatch_before_last_save
   end
 end
